@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>סמדר אלול - The Octo Bunch</title>
+<meta name="description" content="THE OCTO BUNCH: סדרה מקורית עם מבנה קבוע, דמויות ססגוניות, הומור וטוויסטים. מחפשת אולפן להפקה.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="modulepreload" href="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js">
+<link rel="preload" href="assets/poster.webp" as="image">
+<link rel="preload" href="assets/agent-compressed-fixed.glb" as="fetch" crossorigin>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+<style>
+  :root {
+    --primary: #4A6A8A;
+    --secondary: #7EC8F0;
+    --accent: #F28C28;
+    --bg: #EAF6FD;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: "Fredoka", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--primary);
+    line-height: 1.6;
+  }
+
+  /* Hero: רקע תכלת מונפש (בהשראת Floating Gradient של 21st.dev) */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 16px 32px;
+    text-align: center;
+    background: linear-gradient(180deg, var(--secondary) 0%, var(--bg) 100%);
+  }
+  .blob {
+    position: absolute;
+    width: 28rem;
+    height: 28rem;
+    border-radius: 50%;
+    filter: blur(64px);
+    opacity: .55;
+    pointer-events: none;
+  }
+  .blob.b1 { top: 5%;  right: 8%;  background: linear-gradient(90deg, var(--secondary), #fff); animation: drift1 9s ease-in-out infinite; }
+  .blob.b2 { bottom: 5%; left: 6%; background: linear-gradient(90deg, var(--primary), var(--secondary)); opacity: .35; animation: drift2 11s ease-in-out infinite; }
+  .blob.b3 { top: 45%; left: 40%;  background: linear-gradient(90deg, #fff, var(--secondary)); animation: drift3 13s ease-in-out infinite; }
+  @keyframes drift1 { 0%,100% { transform: translate(0,0) scale(1); }   50% { transform: translate(-100px,50px) scale(1.2); } }
+  @keyframes drift2 { 0%,100% { transform: translate(0,0) scale(1); }   50% { transform: translate(100px,-50px) scale(1.3); } }
+  @keyframes drift3 { 0%,100% { transform: translate(0,0) scale(1); }   50% { transform: translate(-50px,-100px) scale(1.1); } }
+
+  .hero > *:not(.blob) { position: relative; z-index: 1; }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(38px, 9vw, 92px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: .03em;
+  }
+  .word { display: inline-block; white-space: nowrap; margin: 0 .12em; }
+  /* אותיות עם נפח: שכבות הבלטה כהות, ברק עליון וצל רך מתחת */
+  .ch {
+    display: inline-block;
+    cursor: default;
+    transform-origin: 50% 100%;
+    text-shadow:
+      0 1px 0 #3a5673, 0 2px 0 #3a5673, 0 3px 0 #3a5673, 0 4px 0 #3a5673,
+      0 5px 0 #34506b, 0 6px 0 #34506b, 0 7px 0 #2f4962, 0 8px 0 #2f4962,
+      0 10px 6px rgba(47,73,98,.35), 0 16px 18px rgba(47,73,98,.25);
+    -webkit-text-stroke: 2px #3a5673;
+    paint-order: stroke fill;
+  }
+  .ch.c0 { color: #ffffff; }
+  .ch.c1 { color: var(--accent); }
+  .ch.c2 { color: #ffd479; }
+  .ch .in { display: inline-block; transform-origin: 50% 100%; }
+  /* גל קטן ושמח: כל אות קופצת מעט אחרי הקודמת, ואז הפסקה קצרה לפני הגל הבא */
+  .ch { animation: letterWave 3.6s ease-in-out infinite; animation-delay: calc(var(--i) * 0.09s); }
+  @keyframes letterWave {
+    0%, 22%, 100% { transform: translateY(0) rotate(0) scale(1,1); }
+    5%  { transform: translateY(1px) rotate(0) scale(1.05,.95); }
+    11% { transform: translateY(-9px) rotate(-3deg) scale(.97,1.05); }
+    17% { transform: translateY(0) rotate(1deg) scale(1.04,.96); }
+  }
+  .ch .in.hop { animation: letterHop .6s cubic-bezier(.3,.7,.4,1); }
+  @keyframes letterHop {
+    0%   { transform: translateY(0) scale(1,1); }
+    18%  { transform: translateY(2px) scale(1.12,.84); }
+    45%  { transform: translateY(-30px) rotate(-6deg) scale(.92,1.14); }
+    72%  { transform: translateY(0) rotate(3deg) scale(1.1,.88); }
+    86%  { transform: translateY(-5px) rotate(-1deg) scale(.98,1.03); }
+    100% { transform: translateY(0) rotate(0) scale(1,1); }
+  }
+  .tagline {
+    margin: 12px 0 0;
+    max-width: 640px;
+    text-wrap: balance;
+    font-size: clamp(18px, 2.6vw, 26px);
+    line-height: 1.4;
+    font-weight: 500;
+    color: var(--primary);
+  }
+
+  /* הדמות לא מגיבה לעכבר או לאצבע, והאצבע ממשיכה לגלול את הדף */
+  #hero-model { pointer-events: none; touch-action: pan-y; }
+  model-viewer {
+    width: min(92vw, 460px);
+    height: min(58vh, 460px);
+    --poster-color: transparent;
+    --progress-bar-height: 0px;
+    --progress-bar-color: transparent;
+    background: transparent;
+  }
+
+  .stage { margin-top: 8px; }
+
+  .pill {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 14px 36px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 6px 0 #c46d14, 0 12px 24px rgba(242,140,40,.35);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .pill:hover, .pill:focus-visible { transform: translateY(-3px); box-shadow: 0 9px 0 #c46d14, 0 16px 28px rgba(242,140,40,.4); }
+  .pill:active { transform: translateY(3px); box-shadow: 0 3px 0 #c46d14; }
+
+  .clickable { cursor: pointer; display: inline-block; text-decoration: underline dashed rgba(74,106,138,.45); text-underline-offset: 8px; transition: transform .2s ease; }
+  .clickable:hover, .clickable:focus-visible { transform: scale(1.04); outline: none; }
+  /* תמונה קטנה שצצה כשעוברים על הכותרת ונעלמת כשעוזבים; העיגול מוגדל מעט כדי להעלים את הטבעת הלבנה שבקובץ המקורי */
+  .who { position: relative; display: inline-block; }
+  /* אזור ריחוף רחב לאורך שורת הכותרת, כדי שהתמונה לא תיעלם בגלל תזוזה קטנה של העכבר */
+  .who::before { content: ""; position: absolute; top: -10px; bottom: -10px; right: 0; width: min(640px, calc(100vw - 40px)); }
+  .photo-pop {
+    position: absolute; bottom: 2px; right: calc(100% + 16px); z-index: 5;
+    width: 100px; aspect-ratio: 1; border-radius: 50%; overflow: hidden;
+    box-shadow: 0 0 0 4px #fff, 0 10px 24px rgba(40,64,88,.35);
+    opacity: 0; transform: scale(.6); transform-origin: 100% 100%;
+    pointer-events: none;
+    transition: opacity .2s ease, transform .3s cubic-bezier(.3,1.4,.5,1);
+  }
+  .who.show .photo-pop { opacity: 1; transform: scale(1); pointer-events: auto; }
+  .photo-pop img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.14); display: block; }
+
+  /* ווטסון קטן: הזווית הקדמית מתוך גיליון הזוויות של הדמות.
+     multiply מעלים את הרקע הלבן של התמונה. */
+  .watson-pop {
+    position: absolute; bottom: -4px; right: calc(100% + 10px); z-index: 5;
+    width: 96px; height: 128px; pointer-events: none; mix-blend-mode: multiply;
+    opacity: 0; transition: opacity .2s ease;
+  }
+  #meet.show .watson-pop { opacity: 1; pointer-events: auto; }
+  .watson-sprite {
+    width: 100%; height: 100%;
+    background: url("assets/agent-multi-angle.png") 0 0 / 400% 100% no-repeat;
+    transform-origin: 50% 100%;
+  }
+  /* קופץ פעם אחת ברגע שמגיעים לכותרת, ואז עומד סטטי כל עוד העכבר שם */
+  #meet.show .watson-sprite { animation: jumpOnce .75s cubic-bezier(.3,.7,.4,1) 1; }
+  @keyframes jumpOnce {
+    0%   { transform: translateY(0) scale(1,1); }
+    15%  { transform: translateY(0) scale(1.1,.88); }
+    45%  { transform: translateY(-26px) rotate(-4deg) scale(.95,1.1); }
+    72%  { transform: translateY(0) rotate(2deg) scale(1.08,.92); }
+    88%  { transform: translateY(-4px) scale(.99,1.02); }
+    100% { transform: translateY(0) rotate(0) scale(1,1); }
+  }
+
+  .cta-buttons { display: flex; flex-wrap: wrap; gap: 16px 20px; justify-content: center; }
+  .cta-buttons .pill { margin-top: 0; }
+  .pill-alt { background: #fff; color: var(--primary); box-shadow: 0 6px 0 #b9d3e6, 0 12px 24px rgba(74,106,138,.2); }
+  .pill-alt:hover, .pill-alt:focus-visible { box-shadow: 0 9px 0 #b9d3e6, 0 16px 28px rgba(74,106,138,.25); }
+  .pill-alt:active { box-shadow: 0 3px 0 #b9d3e6; }
+
+  .amazon-line { margin-top: 18px !important; }
+  .amazon-line.site-line { margin-top: 10px !important; }
+  .pill-small { margin-top: 0; padding: 10px 26px; font-size: 17px; }
+
+  .hero .lang-switch { position: absolute; top: 16px; left: 16px; z-index: 3; padding: 6px 16px; border-radius: 999px; background: #fff; color: var(--primary); font-size: 15px; font-weight: 600; text-decoration: none; box-shadow: 0 3px 0 #b9d3e6; }
+  .lang-switch:hover, .lang-switch:focus-visible { transform: translateY(-2px); }
+
+  section {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 56px 20px;
+  }
+  section h2 {
+    margin: 0 0 12px;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--primary);
+  }
+  section p { margin: 0; font-size: 19px; }
+  .cta { text-align: center; padding-bottom: 80px; }
+  .cta p { margin-bottom: 20px; font-size: 22px; font-weight: 600; }
+  .cta .cta-sub { margin-top: -8px; font-size: 17px; font-weight: 400; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .photo-pop, .watson-pop { transition: none; }
+    .watson-sprite { animation: none !important; }
+    .blob, .pill, .ch, .ch .in { animation: none !important; transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <a class="lang-switch" href="en/" hreflang="en" lang="en" aria-label="English" title="English">E</a>
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+
+  <h1 dir="ltr" aria-label="THE OCTO BUNCH" id="title"><span class="word"><span class="ch c0" style="--i:0" aria-hidden="true"><span class="in">T</span></span><span class="ch c1" style="--i:1" aria-hidden="true"><span class="in">H</span></span><span class="ch c2" style="--i:2" aria-hidden="true"><span class="in">E</span></span></span> <span class="word"><span class="ch c0" style="--i:3" aria-hidden="true"><span class="in">O</span></span><span class="ch c1" style="--i:4" aria-hidden="true"><span class="in">C</span></span><span class="ch c2" style="--i:5" aria-hidden="true"><span class="in">T</span></span><span class="ch c0" style="--i:6" aria-hidden="true"><span class="in">O</span></span></span> <span class="word"><span class="ch c1" style="--i:7" aria-hidden="true"><span class="in">B</span></span><span class="ch c2" style="--i:8" aria-hidden="true"><span class="in">U</span></span><span class="ch c0" style="--i:9" aria-hidden="true"><span class="in">N</span></span><span class="ch c1" style="--i:10" aria-hidden="true"><span class="in">C</span></span><span class="ch c2" style="--i:11" aria-hidden="true"><span class="in">H</span></span></span></h1>
+  <h2 class="tagline">סדרה מקורית עם מבנה קבוע, דמויות ססגוניות, הומור וטוויסטים - מוכנה להפוך לתוכנית.</h2>
+
+  <div class="stage" id="stage">
+    <model-viewer id="hero-model"
+      src="assets/agent-compressed-fixed.glb"
+      alt="ווטסון, הסוכן הבלש עם זכוכית המגדלת"
+      poster="assets/poster.webp"
+      loading="eager"
+      reveal="auto"
+      interaction-prompt="none"
+      shadow-intensity="0.8"
+      exposure="1.1">
+    </model-viewer>
+  </div>
+
+</header>
+
+<section>
+  <div class="who" id="who"><h2 id="whoami" class="clickable" tabindex="0">מי אני</h2><div class="photo-pop"><img src="assets/smadar.jpg" alt="סמדר אלול"></div></div>
+  <p>סמדר אלול. כותבת ויוצרת, מוציאה לאור עצמאית של ספרי ילדים בעברית ובאנגלית. יוצרת הסדרה The Octo Bunch כותרים הנמכרים באמזון ובקינדל. אני מחפשת אולפן שירכוש את הזכויות להפיק את הסדרה. לכל פרק מבנה קבוע: פורמט חוזר שקל להפיק ולהמשיך.</p>
+  <p class="amazon-line"><a class="pill pill-alt pill-small" href="https://www.amazon.com/s?k=THE+OCTO+BUNCH" target="_blank" rel="noopener">לכל כותרי הסדרה באמזון</a></p>
+  <p class="amazon-line site-line"><a class="pill pill-alt pill-small" href="https://www.the-octo-bunch.com/site/detail/detail/detailDetail.asp?detail_id=6156485&amp;depart_id=401853" target="_blank" rel="noopener">לאתר הסדרה THE OCTO BUNCH</a></p>
+</section>
+
+<section>
+  <div class="who" id="meet"><h2 class="clickable" tabindex="0">הכירו את ווטסון</h2><div class="watson-pop" aria-hidden="true"><div class="watson-sprite"></div></div></div>
+  <p>ווטסון, העוזר האישי שלי בעולם סוכני ה-AI: בלש חד וסקרן, עם זכוכית מגדלת שלא מפספסת אף פרט.</p>
+</section>
+
+<section class="cta">
+  <p>רוצים לראות את הסדרה? הזמינו פגישה.</p>
+  <p class="cta-sub">בפגישה אציג את הסדרה, הדמויות ואפשרויות שיתוף פעולה.</p>
+  <div class="cta-buttons">
+    <a class="pill" href="mailto:the.octo.bunch@gmail.com?subject=%D7%94%D7%96%D7%9E%D7%A0%D7%AA%20%D7%A4%D7%92%D7%99%D7%A9%D7%94%20-%20The%20Octo%20Bunch">הזמינו פגישה במייל</a>
+    <a class="pill pill-alt" href="https://wa.me/972503250525?text=%D7%A9%D7%9C%D7%95%D7%9D%20%D7%A1%D7%9E%D7%93%D7%A8%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%94%D7%96%D7%9E%D7%99%D7%9F%20%D7%A4%D7%92%D7%99%D7%A9%D7%94%20-%20The%20Octo%20Bunch" target="_blank" rel="noopener">וואטסאפ</a>
+  </div>
+</section>
+
+<script>
+  /* הדמות עומדת במקום. בכל פעם שעוברים עליה (עכבר או אצבע) היא עושה סיבוב מהיר של 360 מעלות ונעצרת.
+     אין גרירה ואין זום: האצבע ממשיכה לגלול את הדף. */
+  (function () {
+    var stage = document.getElementById('stage');
+    var mv = document.getElementById('hero-model');
+    var scene, body = null, spinning = false, SPIN_MS = 700;
+
+    function init() {
+      var sym = Object.getOwnPropertySymbols(mv).filter(function (s) { return s.description === 'scene'; })[0];
+      scene = mv[sym];
+      scene.traverse(function (o) {
+        if (!body && o.type === 'Group' && o.children.some(function (c) { return c.type === 'Group'; })) body = o;
+        var m = o.isMesh && o.material;
+        if (m && m.name === 'lens-glass') { m.opacity = 0.03; m.transparent = true; m.depthWrite = false; m.envMapIntensity = 0; m.needsUpdate = true; }
+      });
+      scene.queueRender();
+    }
+    function spin() {
+      if (!body || spinning) return;
+      spinning = true;
+      var t0 = performance.now();
+      (function step(now) {
+        var t = Math.min((now - t0) / SPIN_MS, 1);
+        var e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        body.rotation.y = Math.PI * 2 * e;
+        scene.queueRender();
+        if (t < 1) requestAnimationFrame(step);
+        else { body.rotation.y = 0; scene.queueRender(); spinning = false; }
+      })(t0);
+    }
+    if (mv.loaded) init(); else mv.addEventListener('load', init);
+    stage.addEventListener('pointerenter', spin);
+    stage.addEventListener('pointerdown', spin);
+  })();
+</script>
+<script>
+  /* בנוסף לגל האוטומטי: כל אות קופצת גבוה יותר כשעוברים עליה עם העכבר (או נוגעים בה) */
+  document.querySelectorAll('#title .ch').forEach(function (ch) {
+    var el = ch.querySelector('.in');
+    function hop() {
+      if (el.classList.contains('hop')) return;
+      el.classList.add('hop');
+      setTimeout(function () { el.classList.remove('hop'); }, 620);
+    }
+    ch.addEventListener('pointerenter', hop);
+    ch.addEventListener('click', hop);
+  });
+</script>
+<script>
+  /* התמונות הקטנות ("מי אני" וווטסון): הן נשארות כל עוד הקורא על השורה של הכותרת.
+     בעכבר: כל עוד העכבר על שורת הכותרת או על התמונה, ונעלמות רק אחרי שהות של כשנייה מחוץ לשורה.
+     במגע: אין עכבר, ולכן הן מוצגות כל עוד הכותרת באזור האמצעי של המסך בזמן הגלילה. */
+  (function () {
+    var touch = window.matchMedia('(hover: none)').matches;
+    function setup(box) {
+      var timer = null;
+      function show() { clearTimeout(timer); box.classList.add('show'); }
+      function hide() { clearTimeout(timer); timer = setTimeout(function () { box.classList.remove('show'); }, 1000); }
+      if (touch && 'IntersectionObserver' in window) {
+        new IntersectionObserver(function (e) {
+          if (e[0].isIntersecting) show(); else { clearTimeout(timer); box.classList.remove('show'); }
+        }, { rootMargin: '-28% 0px -28% 0px' }).observe(box);
+        return;
+      }
+      box.addEventListener('pointerenter', function (e) { if (e.pointerType !== 'touch') show(); });
+      box.addEventListener('pointerleave', function (e) { if (e.pointerType !== 'touch') hide(); });
+      box.addEventListener('focusin', show);
+      box.addEventListener('focusout', hide);
+    }
+    ['who', 'meet'].forEach(function (id) { setup(document.getElementById(id)); });
+  })();
+</script>
+
+</body>
+</html>
