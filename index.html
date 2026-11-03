@@ -141,6 +141,7 @@
   .pill-alt:hover:not(:disabled), .pill-alt:focus-visible { box-shadow: 0 9px 0 #b9d3e6, 0 16px 28px rgba(74,106,138,.25); }
   .pill-alt:active:not(:disabled) { box-shadow: 0 3px 0 #b9d3e6; }
   .pill:disabled { opacity: .55; cursor: default; }
+  .pill-vote { padding: 8px 30px; font-size: 38px; line-height: 1.2; }
 
   /* סקר: אהבתי / לא אהבתי */
   .poll { margin-top: 20px; }
@@ -179,8 +180,8 @@
   <div class="poll" id="poll">
     <p>מה דעתך על ווטסון?</p>
     <div class="buttons">
-      <button class="pill" type="button" data-vote="like">אהבתי</button>
-      <button class="pill pill-alt" type="button" data-vote="dislike">לא אהבתי</button>
+      <button class="pill pill-vote" type="button" data-vote="like" aria-label="אהבתי">👍</button>
+      <button class="pill pill-alt pill-vote" type="button" data-vote="dislike" aria-label="לא אהבתי">👎</button>
     </div>
     <p class="thanks" id="thanks" role="status" aria-live="polite"></p>
   </div>
